@@ -34,7 +34,7 @@ export async function getMovieGenres() {
 }
 
 export async function getMovies(query, year) {
-  if (!query) {
+  if (query === '') {
     return NO_RESULTS;
   }
 

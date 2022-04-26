@@ -14,12 +14,14 @@ export default function SearchFilters({
   languages,
   searchMovies,
 }) {
-  const [keywords, setKeywords] = useState('');
+  const [keyword, setKeywords] = useState(null);
   const [year, setYear] = useState('');
 
   useEffect(() => {
-    searchMovies(keywords, year);
-  }, [keywords, year, searchMovies]);
+    if (keyword === null) return;
+
+    searchMovies(keyword, year);
+  }, [keyword, year, searchMovies]);
 
   return (
     <FiltersWrapper>

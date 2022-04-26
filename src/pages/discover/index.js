@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useCallback, useReducer } from 'react';
 import styled from 'styled-components';
 import debounce from 'lodash.debounce';
 
@@ -6,46 +6,28 @@ import * as fetcher from '../../fetcher';
 
 import SearchFilters from '../../components/searchfilter';
 import MovieList from '../../components/movielist';
-
-const initialState = {
-  keyword: '',
-  year: 0,
-  results: [],
-  totalCount: 0,
-  genreOptions: [],
-  ratingOptions: [
-    { id: 7.5, name: 7.5 },
-    { id: 8, name: 8 },
-    { id: 8.5, name: 8.5 },
-    { id: 9, name: 9 },
-    { id: 9.5, name: 9.5 },
-    { id: 10, name: 10 },
-  ],
-  languageOptions: [
-    { id: 'GR', name: 'Greek' },
-    { id: 'EN', name: 'English' },
-    { id: 'RU', name: 'Russian' },
-    { id: 'PO', name: 'Polish' },
-  ],
-};
+import { init, reducer } from './reducer';
 
 const Discover = () => {
-  const [results, setResults] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
-  const [genreOptions, setGenreOptions] = useState([]);
-  const { languageOptions, ratingOptions } = initialState;
+  const [state, dispatch] = useReducer(reducer, null, init);
+  const { results, totalCount, genreOptions, languageOptions, ratingOptions } =
+    state;
+
+  const setValue = (type) => (value) => {
+    dispatch({ type, payload: value });
+  };
 
   useEffect(() => {
-    getMovieGenres(setGenreOptions);
-    getPopularMovies(setResults);
+    getMovieGenres(setValue('GENRE'));
+    getPopularMovies(setValue('RESULTS'));
   }, []);
 
   useEffect(() => {
-    setTotalCount(results.length);
+    setValue('COUNT')(results.length);
   }, [results]);
 
   const searchMovies = useCallback((keyword, year) => {
-    getMovies(setResults, keyword, year);
+    getMovies(setValue('RESULTS'), keyword, year);
   }, []);
 
   return (
