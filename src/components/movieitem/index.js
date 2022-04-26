@@ -5,6 +5,8 @@ import * as colors from '../../colors';
 import { getImageUrl } from '../../fetcher';
 
 export default function MovieItem({ movie, genres }) {
+  const genreString = getGenres(movie, genres).join(' | ');
+
   return (
     <MovieItemWrapper>
       <LeftCont>
@@ -15,7 +17,7 @@ export default function MovieItem({ movie, genres }) {
           <Title>{movie.title}</Title>
           <Rating>{movie.vote_average.toFixed(1)}</Rating>
         </Header>
-        <Genres>action | comedy | adventure</Genres>
+        <Genres>{genreString}</Genres>
         <Overview>{movie.overview}</Overview>
         <Date>
           <span>{movie.release_date}</span>
@@ -24,6 +26,11 @@ export default function MovieItem({ movie, genres }) {
     </MovieItemWrapper>
   );
 }
+
+const getGenres = (movie, genres) =>
+  movie.genre_ids
+    .map((id) => genres.find((genre) => genre.id === id))
+    .map(({ name }) => name);
 
 const MovieItemWrapper = styled.div`
   display: flex;

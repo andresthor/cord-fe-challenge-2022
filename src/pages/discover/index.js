@@ -31,10 +31,11 @@ const initialState = {
 const Discover = () => {
   const [results, setResults] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
-  const { genreOptions, languageOptions, ratingOptions } = initialState;
+  const [genreOptions, setGenreOptions] = useState([]);
+  const { languageOptions, ratingOptions } = initialState;
 
-  // TODO: Preload and set the popular movies and movie genres when page loads
   useEffect(() => {
+    getMovieGenres(setGenreOptions);
     getPopularMovies(setResults);
   }, []);
 
@@ -57,7 +58,7 @@ const Discover = () => {
         />
       </MovieFilters>
       <MovieResults>
-        <MovieList movies={results} genres={genreOptions || []} />
+        <MovieList movies={results} genres={genreOptions} />
       </MovieResults>
     </DiscoverWrapper>
   );
@@ -65,6 +66,10 @@ const Discover = () => {
 
 const getPopularMovies = (cb) => {
   fetcher.getPopularMovies().then(({ results }) => cb(results));
+};
+
+const getMovieGenres = (cb) => {
+  fetcher.getMovieGenres().then(({ genres }) => cb(genres));
 };
 
 const DiscoverWrapper = styled.main`
