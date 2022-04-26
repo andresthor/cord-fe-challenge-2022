@@ -62,8 +62,12 @@ const getMovies = debounce((cb, query, year) => {
 }, 250);
 
 const _getMovies = (cb, query, year) => {
-  fetcher.getMovies(query, year).then(({ results }) => cb(results));
+  fetcher
+    .getMovies(query, year)
+    .then(({ results }) => cb(results.filter(removeEmpty)));
 };
+
+const removeEmpty = (movie) => movie.poster_path && movie.overview;
 
 const DiscoverWrapper = styled.main`
   display: flex;
