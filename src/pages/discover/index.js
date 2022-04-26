@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
+import debounce from 'lodash.debounce';
 
 import * as fetcher from '../../fetcher';
 
@@ -43,7 +44,9 @@ const Discover = () => {
     setTotalCount(results.length);
   }, [results]);
 
-  // TODO: Update search results based on the keyword and year inputs
+  const searchMovies = useCallback((keyword, year) => {
+    getMovies(setResults, keyword, year);
+  }, []);
 
   return (
     <DiscoverWrapper>
@@ -54,7 +57,7 @@ const Discover = () => {
           genres={genreOptions}
           ratings={ratingOptions}
           languages={languageOptions}
-          searchMovies={(keyword, year) => this.searchMovies(keyword, year)}
+          searchMovies={searchMovies}
         />
       </MovieFilters>
       <MovieResults>
@@ -70,6 +73,14 @@ const getPopularMovies = (cb) => {
 
 const getMovieGenres = (cb) => {
   fetcher.getMovieGenres().then(({ genres }) => cb(genres));
+};
+
+const getMovies = debounce((cb, query, year) => {
+  _getMovies(cb, query, year);
+}, 250);
+
+const _getMovies = (cb, query, year) => {
+  fetcher.getMovies(query, year).then(({ results }) => cb(results));
 };
 
 const DiscoverWrapper = styled.main`
