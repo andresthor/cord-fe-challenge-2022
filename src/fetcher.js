@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 // INSERT API KEY HERE
-const api_key =
-  console.log(process.env.REACT_APP_IMDB_API_KEY) || process.env.REACT_APP_IMDB_API_KEY || '';
+const api_key = process.env.REACT_APP_IMDB_API_KEY || '';
 const params = { api_key };
 
 const API_URL = 'https://api.themoviedb.org/3';
