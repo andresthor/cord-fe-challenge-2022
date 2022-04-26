@@ -82,6 +82,9 @@ const MovieResults = styled.div`
   @media all and (min-width: 720px) {
     width: calc(100% - 295px);
   }
+  @media all and (max-width: 1024px) {
+    order: 3;
+  }
 `;
 
 const MovieFilters = styled.div`
@@ -96,10 +99,23 @@ const MovieFilters = styled.div`
 
 const MobilePageTitle = styled.h1`
   display: none;
+
+  @media all and (max-width: 720px) {
+    display: block;
+    margin: 0 60px;
+  }
 `;
 
 const TotalCount = styled.strong`
   display: block;
+
+  @media all and (max-width: 1024px) {
+    order: 2;
+    margin: 20px 0 20px 60px;
+  }
+  @media all and (max-width: 720px) {
+    margin: 0;
+  }
 `;
 
 export default Discover;

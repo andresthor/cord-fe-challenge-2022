@@ -6,6 +6,7 @@ import SearchBar from '../../components/searchbar';
 
 import SearchIcon from '../../images/search-icon-yellow.png';
 import YearIcon from '../../images/year-icon.png';
+import { lightBackground } from '../../colors';
 
 export default function SearchFilters({
   genres,
@@ -32,26 +33,40 @@ export default function SearchFilters({
           placeholder="Search for movies"
           onChange={setKeywords}
         />
-        <SearchBar
-          id="year_search_input"
-          type="number"
-          icon={{ src: YearIcon, alt: 'Calendar icon' }}
-          placeholder="Year of release"
-          onChange={setYear}
-        />
+        <NoMobile>
+          <SearchBar
+            id="year_search_input"
+            type="number"
+            icon={{ src: YearIcon, alt: 'Calendar icon' }}
+            placeholder="Year of release"
+            onChange={setYear}
+          />
+        </NoMobile>
       </SearchFiltersCont>
-      <SearchFiltersCont>
-        <CategoryTitle>Movies</CategoryTitle>
-        <ExpandableFilter items={genres} title={'Select genre(s)'} />
-        <ExpandableFilter items={ratings} title={'Select min. vote'} />
-        <ExpandableFilter items={languages} title={'Select language'} />
-      </SearchFiltersCont>
+      <NoMobile>
+        <SearchFiltersCont>
+          <CategoryTitle>Movies</CategoryTitle>
+          <ExpandableFilter items={genres} title={'Select genre(s)'} />
+          <ExpandableFilter items={ratings} title={'Select min. vote'} />
+          <ExpandableFilter items={languages} title={'Select language'} />
+        </SearchFiltersCont>
+      </NoMobile>
     </FiltersWrapper>
   );
 }
 
+const NoMobile = styled.span`
+  @media all and (max-width: 720px) {
+    display: none;
+  }
+`;
+
 const FiltersWrapper = styled.div`
   position: relative;
+  order: 1;
+  @media all and (max-width: 1024px) {
+    order: 2;
+  }
 `;
 
 const SearchFiltersCont = styled.div`
@@ -69,6 +84,13 @@ const SearchFiltersCont = styled.div`
     css`
       margin-bottom: 15px;
     `}
+
+  @media all and (max-width: 720px) {
+    background-color: ${lightBackground};
+  }
+  @media all and (max-width: 1024px) {
+    padding: 20px 0;
+  }
 `;
 
 const CategoryTitle = styled.h3`

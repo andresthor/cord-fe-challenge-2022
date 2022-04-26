@@ -59,6 +59,7 @@ export default function SideNavBar() {
 }
 
 const HamburgerMenu = styled.div`
+  position: absolute;
   padding: 35px;
   cursor: pointer;
   width: fit-content;

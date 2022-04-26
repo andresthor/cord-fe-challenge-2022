@@ -1,16 +1,32 @@
-import React from "react";
+import React from 'react';
 import styled from 'styled-components';
 
-import * as colors from "../../colors";
+import * as colors from '../../colors';
+import FilterIcon from '../../images/filter-icon.png';
 
-export default function SearchBar ({ icon, id, type, placeholder, onChange }) {
+export default function SearchBar({ icon, id, type, placeholder, onChange }) {
   return (
     <InputWrapper className="search_bar_wrapper">
       <img src={icon.src} alt={icon.alt} htmlFor={id} width="25" />
-      <input type={type} id={id} onChange={e => onChange(e.target.value)} placeholder={placeholder} />
+      <input
+        type={type}
+        id={id}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+      />
+      <Filter>
+        <img src={FilterIcon} alt="Filter movie results" onClick={() => null} />
+      </Filter>
     </InputWrapper>
   );
 }
+
+const Filter = styled.span`
+  cursor: pointer;
+  @media all and (min-width: 720px) {
+    display: none;
+  }
+`;
 
 const InputWrapper = styled.div`
   display: flex;
@@ -29,9 +45,9 @@ const InputWrapper = styled.div`
     font-weight: 900;
 
     &::placeholder {
-      opacity: .8;
+      opacity: 0.8;
       color: ${colors.primaryColor};
       font-weight: 300;
     }
   }
-`
+`;
