@@ -1,17 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import * as colors from "../../colors";
-import * as fetcher from "../../fetcher";
+import * as fetcher from '../../fetcher';
 
-import SearchFilters from "../../components/searchfilter";
-import MovieList from "../../components/movielist";
+import SearchFilters from '../../components/searchfilter';
+import MovieList from '../../components/movielist';
 
-export default class Discover extends React.Component {
-  constructor (props) {
-    super(props);
-
-    this.state = {
+const initialState = {
       keyword: '',
       year: 0,
       results: [],
@@ -23,18 +18,29 @@ export default class Discover extends React.Component {
         { id: 8.5, name: 8.5 },
         { id: 9, name: 9 },
         { id: 9.5, name: 9.5 },
-        { id: 10, name: 10 }
+    { id: 10, name: 10 },
       ],
       languageOptions: [
         { id: 'GR', name: 'Greek' },
         { id: 'EN', name: 'English' },
         { id: 'RU', name: 'Russian' },
-        { id: 'PO', name: 'Polish' }
-      ]
+    { id: 'PO', name: 'Polish' },
+  ],
     };
-  }
+
+const Discover = () => {
+  const [results, setResults] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const { genreOptions, languageOptions, ratingOptions } = initialState;
 
   // TODO: Preload and set the popular movies and movie genres when page loads
+  useEffect(() => {
+    getPopularMovies(setResults);
+  }, []);
+
+  useEffect(() => {
+    setTotalCount(results.length);
+  }, [results]);
 
   // TODO: Update search results based on the keyword and year inputs
 
@@ -54,15 +60,15 @@ export default class Discover extends React.Component {
           />
         </MovieFilters>
         <MovieResults>
-          <MovieList 
-            movies={results || []}
-            genres={genreOptions || []}
-          />
+        <MovieList movies={results} genres={genreOptions || []} />
         </MovieResults>
       </DiscoverWrapper>
-    )
-  }
-}
+  );
+};
+
+const getPopularMovies = (cb) => {
+  fetcher.getPopularMovies().then(({ results }) => cb(results));
+};
 
 const DiscoverWrapper = styled.main`
   padding: 35px;
