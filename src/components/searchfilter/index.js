@@ -87,8 +87,6 @@ const SearchFiltersCont = styled.div`
 
   @media all and (max-width: 720px) {
     background-color: ${lightBackground};
-  }
-  @media all and (max-width: 1024px) {
     padding: 20px 0;
   }
 `;
